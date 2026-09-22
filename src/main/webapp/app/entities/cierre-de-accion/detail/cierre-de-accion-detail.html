@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (cierreDeAccion(); as cierreDeAccionRef) {
+      <div>
+        <h2 data-cy="cierreDeAccionDetailsHeading"><span jhiTranslate="oncallApp.cierreDeAccion.detail.title">Cierre De Accion</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ cierreDeAccionRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.cierreDeAccion.comentarioCierre">Comentario Cierre</span></dt>
+          <dd>
+            <span>{{ cierreDeAccionRef.comentarioCierre }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.cierreDeAccion.cerradoEn">Cerrado En</span></dt>
+          <dd>
+            <span>{{ cierreDeAccionRef.cerradoEn | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.cierreDeAccion.asignacion">Asignacion</span></dt>
+          <dd>
+            @if (cierreDeAccion()!.asignacion) {
+              <div>
+                <a [routerLink]="['/asignacion-de-accion', cierreDeAccion()!.asignacion?.id, 'view']">{{
+                  cierreDeAccionRef.asignacion?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="oncallApp.cierreDeAccion.cerradoPor">Cerrado Por</span></dt>
+          <dd>
+            <span>{{ cierreDeAccionRef.cerradoPor?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/cierre-de-accion', cierreDeAccionRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

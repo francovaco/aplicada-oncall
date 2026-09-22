@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (asignacionDeAccion(); as asignacionDeAccionRef) {
+      <div>
+        <h2 data-cy="asignacionDeAccionDetailsHeading">
+          <span jhiTranslate="oncallApp.asignacionDeAccion.detail.title">Asignacion De Accion</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ asignacionDeAccionRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.titulo">Titulo</span></dt>
+          <dd>
+            <span>{{ asignacionDeAccionRef.titulo }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.descripcion">Descripcion</span></dt>
+          <dd>
+            <span>{{ asignacionDeAccionRef.descripcion }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.fechaVencimiento">Fecha Vencimiento</span></dt>
+          <dd>
+            <span>{{ asignacionDeAccionRef.fechaVencimiento | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.estado">Estado</span></dt>
+          <dd>
+            <span [jhiTranslate]="'oncallApp.EstadoAccion.' + (asignacionDeAccionRef.estado ?? 'null')">{{
+              { null: '', PENDIENTE: 'PENDIENTE', EN_CURSO: 'EN_CURSO', COMPLETADA: 'COMPLETADA', DESCARTADA: 'DESCARTADA' }[
+                asignacionDeAccionRef.estado ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.creadaEn">Creada En</span></dt>
+          <dd>
+            <span>{{ asignacionDeAccionRef.creadaEn | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.accionCorrectiva">Accion Correctiva</span></dt>
+          <dd>
+            @if (asignacionDeAccion()!.accionCorrectiva) {
+              <div>
+                <a [routerLink]="['/accion-correctiva', asignacionDeAccion()!.accionCorrectiva?.id, 'view']">{{
+                  asignacionDeAccionRef.accionCorrectiva?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="oncallApp.asignacionDeAccion.responsable">Responsable</span></dt>
+          <dd>
+            <span>{{ asignacionDeAccionRef.responsable?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/asignacion-de-accion', asignacionDeAccionRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

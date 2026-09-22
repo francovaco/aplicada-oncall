@@ -1,0 +1,175 @@
+<div>
+  <h2 id="page-heading" data-cy="AsignacionDeAccionHeading">
+    <span jhiTranslate="oncallApp.asignacionDeAccion.home.title">Asignacion De Accions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span jhiTranslate="oncallApp.asignacionDeAccion.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-asignacion-de-accion"
+        [routerLink]="['/asignacion-de-accion/new']"
+      >
+        <fa-icon icon="plus" />
+        <span jhiTranslate="oncallApp.asignacionDeAccion.home.createLabel">Crear nuevo Asignacion De Accion</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <jhi-filter [filters]="filters" />
+
+  @if (asignacionDeAccions().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="oncallApp.asignacionDeAccion.home.notFound">Ningún Asignacion De Accions encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="titulo">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.titulo">Titulo</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="descripcion">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.descripcion">Descripcion</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fechaVencimiento">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.fechaVencimiento">Fecha Vencimiento</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="estado">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.estado">Estado</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="creadaEn">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.creadaEn">Creada En</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="accionCorrectiva.id">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.accionCorrectiva">Accion Correctiva</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="responsable.login">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.asignacionDeAccion.responsable">Responsable</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (asignacionDeAccion of asignacionDeAccions(); track trackId(asignacionDeAccion)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/asignacion-de-accion', asignacionDeAccion.id, 'view']">{{ asignacionDeAccion.id }}</a>
+              </td>
+              <td>{{ asignacionDeAccion.titulo }}</td>
+              <td>{{ asignacionDeAccion.descripcion }}</td>
+              <td>{{ asignacionDeAccion.fechaVencimiento | formatMediumDate }}</td>
+              <td [jhiTranslate]="'oncallApp.EstadoAccion.' + (asignacionDeAccion.estado ?? 'null')">
+                {{
+                  { null: '', PENDIENTE: 'PENDIENTE', EN_CURSO: 'EN_CURSO', COMPLETADA: 'COMPLETADA', DESCARTADA: 'DESCARTADA' }[
+                    asignacionDeAccion.estado ?? 'null'
+                  ]
+                }}
+              </td>
+              <td>{{ asignacionDeAccion.creadaEn | formatMediumDatetime }}</td>
+              <td>
+                @if (asignacionDeAccion.accionCorrectiva) {
+                  <div>
+                    <a [routerLink]="['/accion-correctiva', asignacionDeAccion.accionCorrectiva.id, 'view']">{{
+                      asignacionDeAccion.accionCorrectiva.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                {{ asignacionDeAccion.responsable?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/asignacion-de-accion', asignacionDeAccion.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/asignacion-de-accion', asignacionDeAccion.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(asignacionDeAccion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (asignacionDeAccions().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    </div>
+  }
+</div>

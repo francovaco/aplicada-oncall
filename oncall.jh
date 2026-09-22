@@ -234,6 +234,36 @@ entity AccionCorrectiva {
   ticketUrl String maxlength(255)
 }
 
+// tp 10
+
+/**
+ * Accion correctiva de postmortem con seguimiento y vencimiento.
+ */
+entity AsignacionDeAccion {
+  titulo String required maxlength(255)
+  descripcion String maxlength(2000)
+  fechaVencimiento LocalDate required
+  estado EstadoAccion required
+  creadaEn Instant required
+}
+
+/**
+ * Recordatorio automatico enviado cuando la accion esta por vencer o vencio.
+ */
+entity RecordatorioDeAccion {
+  mensaje String required maxlength(500)
+  enviadoEn Instant
+  nivelEscalamiento Integer required min(1) max(2)
+}
+
+/**
+ * Registro del cierre efectivo de una accion correctiva.
+ */
+entity CierreDeAccion {
+  comentarioCierre String maxlength(2000)
+  cerradoEn Instant required
+}
+
 enum EstadoNotificacion {
   PENDIENTE, ENVIADA, ENTREGADA, FALLIDA, RECONOCIDA
 }
@@ -266,6 +296,12 @@ relationship ManyToOne {
 
   Notificacion{incidente(titulo) required} to Incidente{notificacion}
   AccionCorrectiva{postmortem(titulo) required} to Postmortem{accion}
+
+  AsignacionDeAccion{accionCorrectiva required} to AccionCorrectiva
+  RecordatorioDeAccion{asignacion required} to AsignacionDeAccion
+  CierreDeAccion{asignacion required} to AsignacionDeAccion
+  CierreDeAccion{cerradoPor(login) required} to User with builtInEntity
+  AsignacionDeAccion{responsable(login)} to User with builtInEntity
 }
 
 /**
@@ -304,3 +340,6 @@ paginate Incidente, Alerta, Postmortem with pagination
 paginate EventoDeIncidente, Notificacion, TurnoDeGuardia with infinite-scroll
 
 filter Incidente, Alerta, Servicio, Notificacion
+
+paginate AsignacionDeAccion, RecordatorioDeAccion with pagination
+filter AsignacionDeAccion

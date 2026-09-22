@@ -1,0 +1,134 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-recordatorio-de-accion-heading"
+        data-cy="RecordatorioDeAccionCreateUpdateHeading"
+        jhiTranslate="oncallApp.recordatorioDeAccion.home.createOrEditLabel"
+      >
+        Crear o editar Recordatorio De Accion
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="global.field.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let mensajeRef = editForm.get('mensaje')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_mensaje" jhiTranslate="oncallApp.recordatorioDeAccion.mensaje">Mensaje</label>
+          <input type="text" class="form-control" name="mensaje" id="field_mensaje" data-cy="mensaje" formControlName="mensaje" />
+          @if (mensajeRef.invalid && (mensajeRef.dirty || mensajeRef.touched)) {
+            <div>
+              @if (mensajeRef.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (mensajeRef.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '500' }"
+                  >Este campo no puede superar más de 500 caracteres.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_enviadoEn" jhiTranslate="oncallApp.recordatorioDeAccion.enviadoEn">Enviado En</label>
+          <div class="d-flex">
+            <input
+              id="field_enviadoEn"
+              data-cy="enviadoEn"
+              type="datetime-local"
+              class="form-control"
+              name="enviadoEn"
+              formControlName="enviadoEn"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        @let nivelEscalamientoRef = editForm.get('nivelEscalamiento')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_nivelEscalamiento" jhiTranslate="oncallApp.recordatorioDeAccion.nivelEscalamiento"
+            >Nivel Escalamiento</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="nivelEscalamiento"
+            id="field_nivelEscalamiento"
+            data-cy="nivelEscalamiento"
+            formControlName="nivelEscalamiento"
+          />
+          @if (nivelEscalamientoRef.invalid && (nivelEscalamientoRef.dirty || nivelEscalamientoRef.touched)) {
+            <div>
+              @if (nivelEscalamientoRef.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (nivelEscalamientoRef.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '1' }"
+                  >Este campo debe ser mayor que 1.</small
+                >
+              }
+              @if (nivelEscalamientoRef.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '2' }"
+                  >Este campo no puede ser mayor que 2.</small
+                >
+              }
+              <small class="form-text text-danger" [hidden]="!nivelEscalamientoRef.errors?.number" jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_asignacion" jhiTranslate="oncallApp.recordatorioDeAccion.asignacion">Asignacion</label>
+          <select
+            class="form-control"
+            id="field_asignacion"
+            data-cy="asignacion"
+            name="asignacion"
+            formControlName="asignacion"
+            [compareWith]="compareAsignacionDeAccion"
+          >
+            @if (!editForm.get('asignacion')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (asignacionDeAccionOption of asignacionDeAccionsSharedCollection(); track $index) {
+              <option [ngValue]="asignacionDeAccionOption">{{ asignacionDeAccionOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['asignacion'])!.invalid && (editForm.get(['asignacion'])!.dirty || editForm.get(['asignacion'])!.touched)) {
+          <div>
+            @if (editForm.get(['asignacion'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving()"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save" />&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

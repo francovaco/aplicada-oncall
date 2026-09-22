@@ -1,0 +1,30 @@
+@if (cierreDeAccion) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(cierreDeAccion.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="cierreDeAccionDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirmar operación de borrado
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p
+        id="jhi-delete-cierreDeAccion-heading"
+        jhiTranslate="oncallApp.cierreDeAccion.delete.question"
+        [translateValues]="{ id: cierreDeAccion.id }"
+      >
+        ¿Seguro que quiere eliminar Cierre De Accion {{ cierreDeAccion.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-cierreDeAccion" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times" />&nbsp;<span jhiTranslate="entity.action.delete">Eliminar</span>
+      </button>
+    </div>
+  </form>
+}

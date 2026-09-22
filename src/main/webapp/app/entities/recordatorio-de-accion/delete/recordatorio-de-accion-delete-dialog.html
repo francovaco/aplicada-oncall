@@ -1,0 +1,30 @@
+@if (recordatorioDeAccion) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(recordatorioDeAccion.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="recordatorioDeAccionDeleteDialogHeading" jhiTranslate="entity.delete.title">
+        Confirmar operación de borrado
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p
+        id="jhi-delete-recordatorioDeAccion-heading"
+        jhiTranslate="oncallApp.recordatorioDeAccion.delete.question"
+        [translateValues]="{ id: recordatorioDeAccion.id }"
+      >
+        ¿Seguro que quiere eliminar Recordatorio De Accion {{ recordatorioDeAccion.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-recordatorioDeAccion" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times" />&nbsp;<span jhiTranslate="entity.action.delete">Eliminar</span>
+      </button>
+    </div>
+  </form>
+}

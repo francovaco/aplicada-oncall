@@ -1,0 +1,145 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cierre-de-accion-heading"
+        data-cy="CierreDeAccionCreateUpdateHeading"
+        jhiTranslate="oncallApp.cierreDeAccion.home.createOrEditLabel"
+      >
+        Crear o editar Cierre De Accion
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="global.field.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let comentarioCierreRef = editForm.get('comentarioCierre')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_comentarioCierre" jhiTranslate="oncallApp.cierreDeAccion.comentarioCierre"
+            >Comentario Cierre</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="comentarioCierre"
+            id="field_comentarioCierre"
+            data-cy="comentarioCierre"
+            formControlName="comentarioCierre"
+          />
+          @if (comentarioCierreRef.invalid && (comentarioCierreRef.dirty || comentarioCierreRef.touched)) {
+            <div>
+              @if (comentarioCierreRef.errors?.maxlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: '2000' }"
+                  >Este campo no puede superar más de 2000 caracteres.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let cerradoEnRef = editForm.get('cerradoEn')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_cerradoEn" jhiTranslate="oncallApp.cierreDeAccion.cerradoEn">Cerrado En</label>
+          <div class="d-flex">
+            <input
+              id="field_cerradoEn"
+              data-cy="cerradoEn"
+              type="datetime-local"
+              class="form-control"
+              name="cerradoEn"
+              formControlName="cerradoEn"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (cerradoEnRef.invalid && (cerradoEnRef.dirty || cerradoEnRef.touched)) {
+            <div>
+              @if (cerradoEnRef.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!cerradoEnRef.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Este campo debe ser una fecha y hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_asignacion" jhiTranslate="oncallApp.cierreDeAccion.asignacion">Asignacion</label>
+          <select
+            class="form-control"
+            id="field_asignacion"
+            data-cy="asignacion"
+            name="asignacion"
+            formControlName="asignacion"
+            [compareWith]="compareAsignacionDeAccion"
+          >
+            @if (!editForm.get('asignacion')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (asignacionDeAccionOption of asignacionDeAccionsSharedCollection(); track $index) {
+              <option [ngValue]="asignacionDeAccionOption">{{ asignacionDeAccionOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['asignacion'])!.invalid && (editForm.get(['asignacion'])!.dirty || editForm.get(['asignacion'])!.touched)) {
+          <div>
+            @if (editForm.get(['asignacion'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cerradoPor" jhiTranslate="oncallApp.cierreDeAccion.cerradoPor">Cerrado Por</label>
+          <select
+            class="form-control"
+            id="field_cerradoPor"
+            data-cy="cerradoPor"
+            name="cerradoPor"
+            formControlName="cerradoPor"
+            [compareWith]="compareUser"
+          >
+            @if (!editForm.get('cerradoPor')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (userOption of usersSharedCollection(); track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['cerradoPor'])!.invalid && (editForm.get(['cerradoPor'])!.dirty || editForm.get(['cerradoPor'])!.touched)) {
+          <div>
+            @if (editForm.get(['cerradoPor'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving()"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save" />&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

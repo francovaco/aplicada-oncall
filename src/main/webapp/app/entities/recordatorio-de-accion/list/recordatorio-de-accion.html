@@ -1,0 +1,142 @@
+<div>
+  <h2 id="page-heading" data-cy="RecordatorioDeAccionHeading">
+    <span jhiTranslate="oncallApp.recordatorioDeAccion.home.title">Recordatorio De Accions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span jhiTranslate="oncallApp.recordatorioDeAccion.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-recordatorio-de-accion"
+        [routerLink]="['/recordatorio-de-accion/new']"
+      >
+        <fa-icon icon="plus" />
+        <span jhiTranslate="oncallApp.recordatorioDeAccion.home.createLabel">Crear nuevo Recordatorio De Accion</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (recordatorioDeAccions().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="oncallApp.recordatorioDeAccion.home.notFound">Ningún Recordatorio De Accions encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="mensaje">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.recordatorioDeAccion.mensaje">Mensaje</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="enviadoEn">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.recordatorioDeAccion.enviadoEn">Enviado En</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="nivelEscalamiento">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.recordatorioDeAccion.nivelEscalamiento">Nivel Escalamiento</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="asignacion.id">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.recordatorioDeAccion.asignacion">Asignacion</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (recordatorioDeAccion of recordatorioDeAccions(); track trackId(recordatorioDeAccion)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/recordatorio-de-accion', recordatorioDeAccion.id, 'view']">{{ recordatorioDeAccion.id }}</a>
+              </td>
+              <td>{{ recordatorioDeAccion.mensaje }}</td>
+              <td>{{ recordatorioDeAccion.enviadoEn | formatMediumDatetime }}</td>
+              <td>{{ recordatorioDeAccion.nivelEscalamiento }}</td>
+              <td>
+                @if (recordatorioDeAccion.asignacion) {
+                  <div>
+                    <a [routerLink]="['/asignacion-de-accion', recordatorioDeAccion.asignacion.id, 'view']">{{
+                      recordatorioDeAccion.asignacion.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/recordatorio-de-accion', recordatorioDeAccion.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/recordatorio-de-accion', recordatorioDeAccion.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(recordatorioDeAccion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (recordatorioDeAccions().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    </div>
+  }
+</div>

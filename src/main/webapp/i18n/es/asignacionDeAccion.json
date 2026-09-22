@@ -1,0 +1,30 @@
+{
+  "oncallApp": {
+    "asignacionDeAccion": {
+      "home": {
+        "title": "Asignacion De Accions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Asignacion De Accion",
+        "createOrEditLabel": "Crear o editar Asignacion De Accion",
+        "notFound": "Ningún Asignacion De Accions encontrado"
+      },
+      "created": "Un nuevo Asignacion De Accion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Asignacion De Accion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Asignacion De Accion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Asignacion De Accion {{ id }}?"
+      },
+      "detail": {
+        "title": "Asignacion De Accion"
+      },
+      "id": "ID",
+      "titulo": "Titulo",
+      "descripcion": "Descripcion",
+      "fechaVencimiento": "Fecha Vencimiento",
+      "estado": "Estado",
+      "creadaEn": "Creada En",
+      "accionCorrectiva": "Accion Correctiva",
+      "responsable": "Responsable"
+    }
+  }
+}

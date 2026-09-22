@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20260922021927"
+  },
+  "applications": ["oncall"],
+  "documentation": "Registro del cierre efectivo de una accion correctiva.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "comentarioCierre",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "2000"
+    },
+    {
+      "fieldName": "cerradoEn",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "CierreDeAccion",
+  "relationships": [
+    {
+      "otherEntityName": "asignacionDeAccion",
+      "relationshipName": "asignacion",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "cerradoPor",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

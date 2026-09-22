@@ -1,0 +1,27 @@
+{
+  "oncallApp": {
+    "recordatorioDeAccion": {
+      "home": {
+        "title": "Recordatorio De Accions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Recordatorio De Accion",
+        "createOrEditLabel": "Create or edit a Recordatorio De Accion",
+        "notFound": "No Recordatorio De Accions found"
+      },
+      "created": "A new Recordatorio De Accion is created with identifier {{ param }}",
+      "updated": "A Recordatorio De Accion is updated with identifier {{ param }}",
+      "deleted": "A Recordatorio De Accion is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Recordatorio De Accion {{ id }}?"
+      },
+      "detail": {
+        "title": "Recordatorio De Accion"
+      },
+      "id": "ID",
+      "mensaje": "Mensaje",
+      "enviadoEn": "Enviado En",
+      "nivelEscalamiento": "Nivel Escalamiento",
+      "asignacion": "Asignacion"
+    }
+  }
+}

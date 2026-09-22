@@ -1,0 +1,27 @@
+{
+  "oncallApp": {
+    "cierreDeAccion": {
+      "home": {
+        "title": "Cierre De Accions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Cierre De Accion",
+        "createOrEditLabel": "Crear o editar Cierre De Accion",
+        "notFound": "Ningún Cierre De Accions encontrado"
+      },
+      "created": "Un nuevo Cierre De Accion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Cierre De Accion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Cierre De Accion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Cierre De Accion {{ id }}?"
+      },
+      "detail": {
+        "title": "Cierre De Accion"
+      },
+      "id": "ID",
+      "comentarioCierre": "Comentario Cierre",
+      "cerradoEn": "Cerrado En",
+      "asignacion": "Asignacion",
+      "cerradoPor": "Cerrado Por"
+    }
+  }
+}

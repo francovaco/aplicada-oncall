@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (recordatorioDeAccion(); as recordatorioDeAccionRef) {
+      <div>
+        <h2 data-cy="recordatorioDeAccionDetailsHeading">
+          <span jhiTranslate="oncallApp.recordatorioDeAccion.detail.title">Recordatorio De Accion</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ recordatorioDeAccionRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.recordatorioDeAccion.mensaje">Mensaje</span></dt>
+          <dd>
+            <span>{{ recordatorioDeAccionRef.mensaje }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.recordatorioDeAccion.enviadoEn">Enviado En</span></dt>
+          <dd>
+            <span>{{ recordatorioDeAccionRef.enviadoEn | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.recordatorioDeAccion.nivelEscalamiento">Nivel Escalamiento</span></dt>
+          <dd>
+            <span>{{ recordatorioDeAccionRef.nivelEscalamiento }}</span>
+          </dd>
+          <dt><span jhiTranslate="oncallApp.recordatorioDeAccion.asignacion">Asignacion</span></dt>
+          <dd>
+            @if (recordatorioDeAccion()!.asignacion) {
+              <div>
+                <a [routerLink]="['/asignacion-de-accion', recordatorioDeAccion()!.asignacion?.id, 'view']">{{
+                  recordatorioDeAccionRef.asignacion?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/recordatorio-de-accion', recordatorioDeAccionRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,122 @@
+<div>
+  <h2 id="page-heading" data-cy="CierreDeAccionHeading">
+    <span jhiTranslate="oncallApp.cierreDeAccion.home.title">Cierre De Accions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span jhiTranslate="oncallApp.cierreDeAccion.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cierre-de-accion"
+        [routerLink]="['/cierre-de-accion/new']"
+      >
+        <fa-icon icon="plus" />
+        <span jhiTranslate="oncallApp.cierreDeAccion.home.createLabel">Crear nuevo Cierre De Accion</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (cierreDeAccions().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="oncallApp.cierreDeAccion.home.notFound">Ningún Cierre De Accions encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="comentarioCierre">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.cierreDeAccion.comentarioCierre">Comentario Cierre</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cerradoEn">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.cierreDeAccion.cerradoEn">Cerrado En</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="asignacion.id">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.cierreDeAccion.asignacion">Asignacion</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cerradoPor.login">
+              <div class="d-flex">
+                <span jhiTranslate="oncallApp.cierreDeAccion.cerradoPor">Cerrado Por</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cierreDeAccion of cierreDeAccions(); track trackId(cierreDeAccion)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/cierre-de-accion', cierreDeAccion.id, 'view']">{{ cierreDeAccion.id }}</a>
+              </td>
+              <td>{{ cierreDeAccion.comentarioCierre }}</td>
+              <td>{{ cierreDeAccion.cerradoEn | formatMediumDatetime }}</td>
+              <td>
+                @if (cierreDeAccion.asignacion) {
+                  <div>
+                    <a [routerLink]="['/asignacion-de-accion', cierreDeAccion.asignacion.id, 'view']">{{ cierreDeAccion.asignacion.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                {{ cierreDeAccion.cerradoPor?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/cierre-de-accion', cierreDeAccion.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/cierre-de-accion', cierreDeAccion.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(cierreDeAccion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

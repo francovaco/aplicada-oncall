@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20260922021926"
+  },
+  "applications": ["oncall"],
+  "documentation": "Recordatorio automatico enviado cuando la accion esta por vencer o vencio.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "mensaje",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "500"
+    },
+    {
+      "fieldName": "enviadoEn",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "nivelEscalamiento",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "2",
+      "fieldValidateRulesMin": "1"
+    }
+  ],
+  "name": "RecordatorioDeAccion",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "asignacionDeAccion",
+      "relationshipName": "asignacion",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

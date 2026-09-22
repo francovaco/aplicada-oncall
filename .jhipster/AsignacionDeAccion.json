@@ -1,0 +1,60 @@
+{
+  "annotations": {
+    "changelogDate": "20260922021925"
+  },
+  "applications": ["oncall"],
+  "documentation": "Accion correctiva de postmortem con seguimiento y vencimiento.",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "titulo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "2000"
+    },
+    {
+      "fieldName": "fechaVencimiento",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "EstadoAccion",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PENDIENTE,EN_CURSO,COMPLETADA,DESCARTADA"
+    },
+    {
+      "fieldName": "creadaEn",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "AsignacionDeAccion",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "accionCorrectiva",
+      "relationshipName": "accionCorrectiva",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "responsable",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}
